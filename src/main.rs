@@ -33,9 +33,9 @@ fn main() {
     let unfinished_game = Sudoku::new_from_grid(unfinished_grid);
     let finished_game = Sudoku::new_from_grid(finished_grid);
 
-    Sudoku::is_solved(unfinished_game.clone());
+    Sudoku::solved(unfinished_game.clone());
     unfinished_game.to_string();
 
-    Sudoku::is_solved(finished_game.clone());
+    Sudoku::solved(finished_game.clone());
     finished_game.to_string();
 }

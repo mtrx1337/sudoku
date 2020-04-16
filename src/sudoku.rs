@@ -25,7 +25,7 @@ pub struct Block {
 }
 
 impl Block {
-    pub fn is_solved(&self) -> bool {
+    pub fn solved(&self) -> bool {
         let mut grid: Vec<u8> = vec![0 as u8; 9];
         let mut i = 0;
         for x in self.grid.iter() {
@@ -49,7 +49,7 @@ impl Block {
                 }
             }
         }
-        return true;
+        true
     }
 
     pub fn to_string(&self) {
@@ -57,7 +57,7 @@ impl Block {
             for y in x.iter() {
                 print!("{}", y.to_string());
             }
-            print!("\n");
+            println!();
         }
     }
 }
@@ -97,7 +97,7 @@ impl Sudoku {
     //                *y = current_number;
     //            } else {
     //                iterations += 1;
-    //                if Sudoku::is_solved(){
+    //                if Sudoku::solved(){
     //                    current_number += 1;
     //                    *y = current_number;
     //                    Sudoku::solve_rec(sudoku.clone(), iterations);
@@ -114,7 +114,7 @@ impl Sudoku {
      */
     pub fn take_block(&self, x: usize, y: usize) -> Block {
         let take_three_from_index =
-            |col: [u8; 9], i: usize| return [col[i], col[i + 1], col[i + 2]];
+            |col: [u8; 9], i: usize| [col[i], col[i + 1], col[i + 2]];
 
         // takes block of 3x3 from coordinates
         // x = width coord
@@ -130,7 +130,7 @@ impl Sudoku {
     /**
      * Tests if a sudoku is solved or not.
      */
-    pub fn is_solved(sudoku: Sudoku) -> bool {
+    pub fn solved(sudoku: Sudoku) -> bool {
         // we need to part the game field in 9 boxes.
         // those we test first
         // every row, column, and box needs to have every single number from
@@ -149,13 +149,13 @@ impl Sudoku {
 
         for block in blocks.iter() {
             block.to_string();
-            if !block.is_solved() {
+            if !block.solved() {
                 println!("Block not solved.");
                 return false;
             }
         }
 
-        return true;
+        true
     }
 
     /**
@@ -166,8 +166,7 @@ impl Sudoku {
         let mut i: u8 = 1;
         for x in &self.grid {
             print!("|");
-            let mut k: u8 = 0;
-            for y in x {
+            for (k, y) in x.iter().enumerate() {
                 if k % 3 == 0 && k != 0 {
                     print!("|");
                 }
@@ -176,11 +175,10 @@ impl Sudoku {
                 } else {
                     print!(" ");
                 }
-                k += 1;
             }
-            print!("|\n");
+            println!("|");
             if i % 3 == 0 && i != 9 {
-                print!("|---+---+---|\n");
+                println!("|---+---+---|");
             }
             i += 1;
         }
