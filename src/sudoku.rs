@@ -1,7 +1,9 @@
+#![allow(dead_code)]
+
 extern crate rand;
 
+use crate::block::Block;
 use rand::prelude::*;
-use std::vec::Vec;
 
 /**
  * returns a 2 dimensional array filled with random numbers
@@ -18,48 +20,6 @@ fn generate_grid() -> [[u8; 9]; 9] {
     }
 
     grid
-}
-
-pub struct Block {
-    grid: [[u8; 3]; 3],
-}
-
-impl Block {
-    pub fn solved(&self) -> bool {
-        let mut grid: Vec<u8> = vec![0 as u8; 9];
-        let mut i = 0;
-        for x in self.grid.iter() {
-            for y in x.iter() {
-                grid[i] = *y;
-                i += 1;
-            }
-        }
-
-        // thanks floppy!
-        let rev_grid: Vec<u8> = grid.iter().copied().rev().collect();
-
-        for x in grid.iter() {
-            let mut i: u8 = 0;
-            for y in rev_grid.iter() {
-                if x == y {
-                    i += 1;
-                    if i == 2 {
-                        return false;
-                    }
-                }
-            }
-        }
-        true
-    }
-
-    pub fn to_string(&self) {
-        for x in self.grid.iter() {
-            for y in x.iter() {
-                print!("{}", y.to_string());
-            }
-            println!();
-        }
-    }
 }
 
 #[derive(Clone)]
@@ -113,8 +73,7 @@ impl Sudoku {
      * takes three from column from index i and stores them in a Block
      */
     pub fn take_block(&self, x: usize, y: usize) -> Block {
-        let take_three_from_index =
-            |col: [u8; 9], i: usize| [col[i], col[i + 1], col[i + 2]];
+        let take_three_from_index = |col: [u8; 9], i: usize| [col[i], col[i + 1], col[i + 2]];
 
         // takes block of 3x3 from coordinates
         // x = width coord
@@ -148,9 +107,9 @@ impl Sudoku {
         ];
 
         for block in blocks.iter() {
-            block.to_string();
             if !block.solved() {
-                println!("Block not solved.");
+                println!("This block is not solved:");
+                block.to_string();
                 return false;
             }
         }

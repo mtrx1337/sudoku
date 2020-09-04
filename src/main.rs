@@ -1,11 +1,9 @@
+mod block;
 mod sudoku;
 
 use sudoku::Sudoku;
 
 fn main() {
-    let game = Sudoku::new();
-    game.to_string();
-
     let unfinished_grid: [[u8; 9]; 9] = [
         [2, 0, 5, 0, 0, 9, 0, 0, 4],
         [0, 0, 0, 0, 0, 0, 3, 0, 7],
@@ -33,9 +31,17 @@ fn main() {
     let unfinished_game = Sudoku::new_from_grid(unfinished_grid);
     let finished_game = Sudoku::new_from_grid(finished_grid);
 
-    Sudoku::solved(unfinished_game.clone());
-    unfinished_game.to_string();
+    println!("Is this unfinished game solved? It should not be...");
+    if Sudoku::solved(unfinished_game) {
+        println!("unfinished_game is solved");
+    } else {
+        println!("unfinished_game is not solved");
+    }
 
-    Sudoku::solved(finished_game.clone());
-    finished_game.to_string();
+    println!("Is this finished game solved? It should be...");
+    if Sudoku::solved(finished_game) {
+        println!("finished_game is solved");
+    } else {
+        println!("finished_game is not solved");
+    }
 }
