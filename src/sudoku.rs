@@ -7,7 +7,7 @@ use rand::prelude::*;
 /**
  * returns a 2 dimensional array filled with random numbers
  */
-fn generate_grid() -> [[u8; 9]; 9] {
+fn new_random_grid() -> [[u8; 9]; 9] {
     let mut rng = rand::thread_rng();
 
     let mut grid: [[u8; 9]; 9] = [[0; 9]; 9];
@@ -30,7 +30,7 @@ pub struct Sudoku {
 impl Sudoku {
     pub fn new(verbose: bool) -> Sudoku {
         Sudoku {
-            grid: generate_grid(),
+            grid: new_random_grid(),
             verbose,
         }
     }
@@ -97,12 +97,11 @@ impl Sudoku {
         // takes block of 3x3 from coordinates
         // x = width coord
         // y = height coord
-        let new_block = [
+        Block::new([
             take_three_from_index(self.grid[y], x),
             take_three_from_index(self.grid[y + 1], x),
             take_three_from_index(self.grid[y + 2], x),
-        ];
-        Block { grid: new_block }
+        ])
     }
 
     /**
@@ -138,11 +137,8 @@ impl Sudoku {
 
         // check rows
         for grid_row in self.grid.iter() {
-            let row = ListOfNine {
-                arr: *grid_row,
-                is_column: false,
-            };
-            if row.is_valid() {
+            let row = ListOfNine::new(*grid_row);
+            if !row.solved() {
                 if self.verbose {
                     println!("This row is not valid:");
                     row.to_string();
@@ -153,14 +149,11 @@ impl Sudoku {
 
         // check columns
         for x in 0..9 {
-            let mut col = ListOfNine {
-                arr: [0 as u8; 9],
-                is_column: true,
-            };
+            let mut col = ListOfNine::new_zeros();
             for y in self.grid.iter() {
                 col.arr[x] = y[x];
             }
-            if col.is_valid() {
+            if !col.solved() {
                 if self.verbose {
                     println!("This column is not valid:");
                     col.to_string();
@@ -207,17 +200,47 @@ pub struct ListOfNine {
 }
 
 impl ListOfNine {
+    pub fn new_zeros_col() -> ListOfNine {
+        ListOfNine {
+            arr: [0 as u8; 9],
+            is_column: true,
+        }
+    }
+
+    pub fn new_zeros() -> ListOfNine {
+        ListOfNine {
+            arr: [0 as u8; 9],
+            is_column: false,
+        }
+    }
+
+    pub fn new(list: [u8; 9]) -> ListOfNine {
+        ListOfNine {
+            arr: list,
+            is_column: false,
+        }
+    }
+
+    pub fn new_column(list: [u8; 9]) -> ListOfNine {
+        ListOfNine {
+            arr: list,
+            is_column: true,
+        }
+    }
+
     /**
      * checks if a list of 9 elements contains all numbers 0..9 but none twice
      */
-    pub fn is_valid(&self) -> bool {
+    pub fn solved(&self) -> bool {
         let mut sorted_row = self.arr;
         sorted_row.sort();
 
-        for (x, i) in sorted_row.iter().enumerate() {
-            if *i != x as u8 {
+        let mut i = 1;
+        for x in sorted_row.iter() {
+            if i != *x {
                 return false;
             }
+            i += 1;
         }
         true
     }
@@ -247,12 +270,21 @@ pub struct Block {
 }
 
 impl Block {
+    pub fn new(grid_of_three: [[u8; 3]; 3]) -> Block {
+        Block {
+            grid: grid_of_three,
+        }
+    }
+
+    pub fn new_zeros() -> Block {
+        Block {
+            grid: [[0 as u8; 3]; 3],
+        }
+    }
+
     pub fn solved(&self) -> bool {
         // flatten grid into a one dimensional array
-        let mut list = ListOfNine {
-            arr: [0 as u8; 9],
-            is_column: false,
-        };
+        let mut list = ListOfNine::new_zeros();
         let mut i = 0;
         for x in self.grid.iter() {
             for y in x.iter() {
@@ -261,7 +293,7 @@ impl Block {
             }
         }
 
-        return list.is_valid();
+        return list.solved();
     }
 
     pub fn to_string(&self) {
