@@ -1,4 +1,3 @@
-mod block;
 mod sudoku;
 
 use sudoku::Sudoku;
@@ -28,18 +27,20 @@ fn main() {
         [7, 6, 3, 4, 1, 8, 2, 5, 9],
     ];
 
-    let unfinished_game = Sudoku::new_from_grid(unfinished_grid);
-    let finished_game = Sudoku::new_from_grid(finished_grid);
+    let mut unfinished_game = Sudoku::new_from_grid(unfinished_grid, false);
+    let mut finished_game = Sudoku::new_from_grid(finished_grid, true);
 
     println!("Is this unfinished game solved? It should not be...");
-    if Sudoku::solved(unfinished_game) {
+    if finished_game.solved() {
         println!("unfinished_game is solved");
     } else {
         println!("unfinished_game is not solved");
     }
 
+    println!("Trying to solve the unfinished_game...");
+    //unfinished_game.solve();
     println!("Is this finished game solved? It should be...");
-    if Sudoku::solved(finished_game) {
+    if Sudoku::solved(&unfinished_game) {
         println!("finished_game is solved");
     } else {
         println!("finished_game is not solved");
