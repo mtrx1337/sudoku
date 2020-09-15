@@ -148,10 +148,10 @@ impl Sudoku {
         }
 
         // check columns
-        for x in 0..9 {
-            let mut col = ListOfNine::new_zeros();
-            for y in self.grid.iter() {
-                col.arr[x] = y[x];
+        for x in self.grid.iter() {
+            let mut col = ListOfNine::new_zeros_column();
+            for (i, y) in x.iter().enumerate() {
+                col.arr[i] = *y;
             }
             if !col.solved() {
                 if self.verbose {
@@ -200,7 +200,7 @@ pub struct ListOfNine {
 }
 
 impl ListOfNine {
-    pub fn new_zeros_col() -> ListOfNine {
+    pub fn new_zeros_column() -> ListOfNine {
         ListOfNine {
             arr: [0 as u8; 9],
             is_column: true,
@@ -246,21 +246,7 @@ impl ListOfNine {
     }
 
     pub fn to_string(&self) {
-        if self.is_column {
-            println!("[{},", self.arr[0]);
-            for (number, i) in self.arr.iter().enumerate() {
-                if *i > 1 && *i < 8 {
-                    println!(" {},", number);
-                }
-            }
-            println!("{}]", self.arr[8]);
-        } else {
-            print!("[");
-            for number in self.arr.iter() {
-                print!("{}, ", number);
-            }
-            println!("]");
-        }
+        println!("{:?}", self.arr);
     }
 }
 

@@ -8,9 +8,9 @@ checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 
 [[package]]
 name = "getrandom"
-version = "0.1.14"
+version = "0.1.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7abc8dd8451921606d809ba32e95b6111925cd2906060d2dcc29c070220503eb"
+checksum = "fc587bc0ec293155d5bfa6b9891ec18a1e330c234f896ea47fbada4cadbe47e6"
 dependencies = [
  "cfg-if",
  "libc",
@@ -19,15 +19,15 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.69"
+version = "0.2.77"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99e85c08494b21a9054e7fe1374a732aeadaff3980b6990b94bfd3a70f690005"
+checksum = "f2f96b10ec2560088a8e76961b00d47107b3a625fecb76dedb29ee7ccbf98235"
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.6"
+version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "74490b50b9fbe561ac330df47c08f3f33073d2d00c150f719147d7c54522fa1b"
+checksum = "c36fa947111f5c62a733b652544dd0016a43ce89619538a8ef92724a6f501a20"
 
 [[package]]
 name = "rand"
@@ -71,7 +71,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sudoku-solver"
+name = "sudokusolve"
 version = "0.1.0"
 dependencies = [
  "rand",
